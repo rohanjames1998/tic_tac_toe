@@ -1,6 +1,37 @@
 require 'pry-byebug'
 
 # ------------------------#
+# MODULES
+# ------------------------#
+module CheckFunctions
+  def is_winner?(grid)
+    #This function checks if 3 user symbol gets aligned together
+    case true
+      #For horizontal alignment
+    when grid[1] == grid[2] && grid[2] == grid[3] #1, 2, and 3
+      return true
+    when grid[4] == grid[5] && grid[5] == grid[6] #4, 5, and 6
+      return true
+    when grid[7] == grid[8] && grid[8] == grid[9] #7, 8, and 9
+      return true
+     #For vertical alignment
+    when grid[1] == grid[4] && grid[4] == grid[7] #1,4, and 7
+      return true
+    when grid[2] == grid[5] && grid[5] == grid[6] #2,5, and 8
+      return true
+    when grid[3] == grid[6] && grid[6] == grid[9] #3,6, and 9
+      return true
+      #For cross alignment
+    when grid[1] == grid[5] && grid[5] == grid[9] #1,5, and 9
+      return true
+    when grid[3] == grid[5] && grid[5] == grid[7] #3,5, and 7
+      return true
+    else
+      return false
+    end
+  end
+end
+# ------------------------#
 # CLASSES
 # ------------------------#
 class Game
@@ -27,15 +58,21 @@ class Game
       @@game_grids[gets.to_i] = symbol
       @@rounds += 1
       case true
-      when is_winner?
+      when is_winner?(@@game_grids)
         puts "Congratulations #{name}! You have Won the GAME!!!"
-      when rounds == 9
+        quit_game = true
+        return 
+      when @@rounds == 9
         puts "This game was a draw. Wanna try again?"
+       quit_game = true
+       return
       end
   end
 end
 
 class Player < Game
+  include  CheckFunctions
+
 
   attr_accessor :name, :symbol
 
@@ -49,32 +86,6 @@ class Player < Game
     end
 end
 
-# ------------------------#
-# MODULES
-# ------------------------#
-module CheckFunctions
-  def is_winner?
-    #This function checks if 3 user symbol gets aligned together
-    case true
-      #For horizontal alignment
-    when @@game_grids[1] == @@game_grids[2] && @@game_grids[2] == @@game_grids[3] #1, 2, and 3
-    when @@game_grids[4] == @@game_grids[5] && @@game_grids[5] == @@game_grids[6] #4, 5, and 6
-    when @@game_grids[7] == @@game_grids[8] && @@game_grids[8] == @@game_grids[9] #7, 8, and 9
-     #For vertical alignment
-    when @@game_grids[1] == @@game_grids[4] && @@game_grids[4] == @@game_grids[7] #1,4, and 7
-    when @@game_grids[2] == @@game_grids[5] && @@game_grids[5] == @@game_grids[6] #2,5, and 8
-    when @@game_grids[3] == @@game_grids[6] && @@game_grids[6] == @@game_grids[9] #3,6, and 9
-      #For cross alignment
-    when @@game_grids[1] == @@game_grids[5] && @@game_grids[5] == @@game_grids[9] #1,5, and 9
-    when @@game_grids[3] == @@game_grids[5] && @@game_grids[5] == @@game_grids[7] #3,5, and 7
-      return true
-    else
-      return false
-    end
-  end
-
-  
-end
 
 
 # ------------------------#
@@ -86,13 +97,10 @@ puts "Hello there! Welcome to Tic Tac Toe!",
      p1 = Player.new
 puts  "Player 2"
      p2 = Player.new
-
-loop do
-  quit_game = false
-
+    quit_game = false
+    loop do
        p1.round
        p2.round
-
   break if quit_game == true
 end
 
