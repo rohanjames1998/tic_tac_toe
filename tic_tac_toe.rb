@@ -61,6 +61,9 @@ module GameFunctions
       if player_symbol.length > 1 || /[0-9]/.match(player_symbol)
         puts"You can only have one character as your symbol. And your symbol can't be an Integer"
         next
+      elsif p1.symbol == p2.symbol
+        puts "You cannot have the same symbol as your partner!!"
+        next
       else
         return player_symbol
       end
