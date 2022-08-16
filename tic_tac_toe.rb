@@ -3,7 +3,7 @@ require 'pry-byebug'
 # ------------------------#
 # MODULES
 # ------------------------#
-module CheckFunctions
+module GameFunctions
   def is_winner?(grid)
     #This function checks if 3 user symbol gets aligned together
     case true
@@ -17,7 +17,7 @@ module CheckFunctions
      #For vertical alignment
     when grid[1] == grid[4] && grid[4] == grid[7] #1,4, and 7
       return true
-    when grid[2] == grid[5] && grid[5] == grid[6] #2,5, and 8
+    when grid[2] == grid[5] && grid[5] == grid[8] #2,5, and 8
       return true
     when grid[3] == grid[6] && grid[6] == grid[9] #3,6, and 9
       return true
@@ -49,21 +49,46 @@ module CheckFunctions
     if grid[place].is_a?(Integer)
       return grid[place] = symbol
     else
-      puts "Sorry that place already contains a symbol"
+      puts "Sorry that place already contains a symbol. Please select a new place."
       next
     end
     end
   end
+
+  def get_symbol
+    loop do
+      player_symbol = gets.chomp
+      if player_symbol.length > 1 || player_symbol.is_a?(Integer)
+        puts"You can only have one character as your symbol. And your symbol can't be an Integer"
+        next
+      else
+        return player_symbol
+      end
+    end
+  end
+
+    def get_name
+      loop do
+        player_name = gets.chomp.capitalize
+        if player_name.length > 10
+          puts "Please keep your name under 10 characters"
+          next
+        else
+          return player_name
+        end
+      end
+    end
 end
 # ------------------------#
 # CLASSES
 # ------------------------#
 class Game
-  include  CheckFunctions
+  include  GameFunctions
 
   attr_reader :end_game
 
   @@rounds = 0
+  # Default values for game_grids
   @@game_grids = {1 => 1,
     2 => 2,
     3 => 3,
@@ -74,24 +99,28 @@ class Game
     8 => 8,
     9 => 9,}
     @@end_game = false
-    
+
     def round
-      puts "#{name}, please enter a number to place your symbol(#{symbol})",
+      #Grid for each round
+      puts "\n#{name}, please enter a number to place your symbol(#{symbol})",
       "      #{@@game_grids[1]} | #{@@game_grids[2]} | #{@@game_grids[3]}
       --+---+--
       #{@@game_grids[4]} | #{@@game_grids[5]} | #{@@game_grids[6]}
       --+---+--
       #{@@game_grids[7]} | #{@@game_grids[8]} | #{@@game_grids[9]}
       "
+      #Function that asks user to choose a grid to place symbol and checks if it is a valid
+      #location and it doesnt already contain a symbol
       place_symbol_on_grid(@@game_grids)
       @@rounds += 1
+      #Checks for winning and drawing conditions
       case true
       when is_winner?(@@game_grids)
-        puts "Congratulations #{name}! You have Won the GAME!!!"
+        puts "\nCongratulations #{name}! You have Won the GAME!!!"
         @@end_game = true
         return
       when @@rounds == 9
-        puts "This game was a draw. Wanna try again?"
+        puts "\nIt's a draw :("
        @@end_game = true
        return
       end
@@ -103,31 +132,29 @@ class Game
 end
 
 class Player < Game
-  include  CheckFunctions
+  include  GameFunctions
 
 
   attr_accessor :name, :symbol
 
   def initialize()
     puts "Please enter a name"
-    name = gets.chomp.capitalize
+    @name = get_name
     puts "#{name}, please chose your symbol"
-    symbol = gets.chomp
-      @name = name
-      @symbol = symbol
+    @symbol = get_symbol
     end
 end
 
 
 
 # ------------------------#
-# GAME FUNCTION
+# Game logic
 # ------------------------#
 
 puts "Hello there! Welcome to Tic Tac Toe!",
      "Player 1"
      p1 = Player.new
-puts  "Player 2"
+puts  "\nPlayer 2"
      p2 = Player.new
     quit_game = false
     # Game Loop
