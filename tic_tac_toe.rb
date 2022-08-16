@@ -58,7 +58,7 @@ module GameFunctions
   def get_symbol
     loop do
       player_symbol = gets.chomp
-      if player_symbol.length > 1 || player_symbol.is_a?(Integer)
+      if player_symbol.length > 1 || /[0-9]/.match(player_symbol)
         puts"You can only have one character as your symbol. And your symbol can't be an Integer"
         next
       else
