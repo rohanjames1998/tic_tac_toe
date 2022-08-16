@@ -36,6 +36,9 @@ end
 # ------------------------#
 class Game
   include  CheckFunctions
+
+  attr_reader :end_game
+
   @@rounds = 0
   @@game_grids = {1 => 1,
     2 => 2,
@@ -46,7 +49,8 @@ class Game
     7 => 7,
     8 => 8,
     9 => 9,}
-
+    @@end_game = false
+    
     def round
       puts "#{name}, please enter a number to place your symbol(#{symbol})",
       "      #{@@game_grids[1]} | #{@@game_grids[2]} | #{@@game_grids[3]}
@@ -60,13 +64,17 @@ class Game
       case true
       when is_winner?(@@game_grids)
         puts "Congratulations #{name}! You have Won the GAME!!!"
-        quit_game = true
-        return 
+        @@end_game = true
+        return
       when @@rounds == 9
         puts "This game was a draw. Wanna try again?"
-       quit_game = true
+       @@end_game = true
        return
       end
+  end
+
+  def self.end_game?
+  @@end_game
   end
 end
 
@@ -98,9 +106,12 @@ puts "Hello there! Welcome to Tic Tac Toe!",
 puts  "Player 2"
      p2 = Player.new
     quit_game = false
+    # Game Loop 
     loop do
-       p1.round
-       p2.round
-  break if quit_game == true
-end
+      p1.round
+     break if Game.end_game? == true
+     p2.round
+     break if Game.end_game? == true
+    end
+
 
