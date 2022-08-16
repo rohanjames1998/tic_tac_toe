@@ -58,20 +58,20 @@ module GameFunctions
   def get_symbol
     loop do
       player_symbol = gets.chomp
-      if player_symbol.length > 1
+      case
+      when player_symbol.length > 1
         puts"You can only have one character as your symbol."
         next
-      elsif  /[0-9]/.match(player_symbol)
+      when /[0-9]/.match(player_symbol)
         puts "Your symbol can't be an Integer"
+        next
+      when player_symbol.length == 0
+        puts "Please choose a symbol"
         next
       else
         return player_symbol
       end
     end
-
-    def duplicate_symbol(p2)
-      
-  end
   end
 
     def get_name
