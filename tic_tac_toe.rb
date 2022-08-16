@@ -31,7 +31,7 @@ module CheckFunctions
     end
   end
 
-  def place_symbol
+  def symbol_place
     loop do
       place = gets
      if /[0-9]/.match(place)
@@ -40,6 +40,18 @@ module CheckFunctions
       puts "#{name}, please enter a number between 1 and 9 to place your symbol"
       next
      end
+    end
+  end
+
+  def place_symbol_on_grid(grid)
+    loop do
+    place = symbol_place
+    if grid[place].is_a?(Integer)
+      return grid[place] = symbol
+    else
+      puts "Sorry that place already contains a symbol"
+      next
+    end
     end
   end
 end
@@ -71,7 +83,7 @@ class Game
       --+---+--
       #{@@game_grids[7]} | #{@@game_grids[8]} | #{@@game_grids[9]}
       "
-      @@game_grids[place_symbol] = symbol
+      place_symbol_on_grid(@@game_grids)
       @@rounds += 1
       case true
       when is_winner?(@@game_grids)
