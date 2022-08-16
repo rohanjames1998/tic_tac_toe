@@ -58,16 +58,20 @@ module GameFunctions
   def get_symbol
     loop do
       player_symbol = gets.chomp
-      if player_symbol.length > 1 || /[0-9]/.match(player_symbol)
-        puts"You can only have one character as your symbol. And your symbol can't be an Integer"
+      if player_symbol.length > 1
+        puts"You can only have one character as your symbol."
         next
-      elsif p1.symbol == p2.symbol
-        puts "You cannot have the same symbol as your partner!!"
+      elsif  /[0-9]/.match(player_symbol)
+        puts "Your symbol can't be an Integer"
         next
       else
         return player_symbol
       end
     end
+
+    def duplicate_symbol(p2)
+      
+  end
   end
 
     def get_name
@@ -82,11 +86,13 @@ module GameFunctions
       end
     end
 end
+# Making GameFunctions module globally available for this game.
+include  GameFunctions
+
 # ------------------------#
 # CLASSES
 # ------------------------#
 class Game
-  include  GameFunctions
 
   attr_reader :end_game
 
@@ -135,7 +141,6 @@ class Game
 end
 
 class Player < Game
-  include  GameFunctions
 
 
   attr_accessor :name, :symbol
@@ -153,13 +158,22 @@ end
 # ------------------------#
 # Game logic
 # ------------------------#
-
 puts "Hello there! Welcome to Tic Tac Toe!",
      "Player 1"
      p1 = Player.new
 puts  "\nPlayer 2"
      p2 = Player.new
-    quit_game = false
+    # This loop checks for symbol duplications
+     loop do
+      if p2.symbol == p1.symbol
+        puts "You cannot have the same symbol as your partner!!"
+        puts "Please choose a different symbol"
+        p2.symbol = get_symbol
+        next
+      else
+        break
+      end
+    end
     # Game Loop
     #We need to check after each round to see if someone has won or if its a draw.
     loop do
