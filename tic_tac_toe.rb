@@ -1,4 +1,3 @@
-require 'pry-byebug'
 
 # ------------------------#
 # MODULES
@@ -65,8 +64,8 @@ module GameFunctions
       when /[0-9]/.match(player_symbol)
         puts "Your symbol can't be an Integer"
         next
-      when player_symbol.length == 0
-        puts "Please choose a symbol"
+      when player_symbol.length == 0 || /\s+/.match(player_symbol)
+        puts "Your symbol cannot be empty"
         next
       else
         return player_symbol
@@ -80,6 +79,10 @@ module GameFunctions
         if player_name.length > 10
           puts "Please keep your name under 10 characters"
           next
+        elsif player_name.length == 0 || /\s+/.match(player_name)
+        puts "Your name cannot be blank",
+        "Please enter a valid name"
+        next
         else
           return player_name
         end
@@ -111,7 +114,7 @@ class Game
 
     def round
       #Grid for each round
-      puts "\n#{name}, please enter a number to place your symbol(#{symbol})",
+      puts "\n\n#{name}, please enter a number to place your symbol(#{symbol})",
       "      #{@@game_grids[1]} | #{@@game_grids[2]} | #{@@game_grids[3]}
       --+---+--
       #{@@game_grids[4]} | #{@@game_grids[5]} | #{@@game_grids[6]}
@@ -177,7 +180,7 @@ puts  "\nPlayer 2"
     # Game Loop
     #We need to check after each round to see if someone has won or if its a draw.
     loop do
-      p1.round
+     p1.round
      break if Game.end_game? == true
      p2.round
      break if Game.end_game? == true
