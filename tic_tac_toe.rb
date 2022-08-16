@@ -30,6 +30,18 @@ module CheckFunctions
       return false
     end
   end
+
+  def place_symbol
+    loop do
+      place = gets
+     if /[0-9]/.match(place)
+      return place.to_i
+     else
+      puts "#{name}, please enter a number between 1 and 9 to place your symbol"
+      next
+     end
+    end
+  end
 end
 # ------------------------#
 # CLASSES
@@ -59,7 +71,7 @@ class Game
       --+---+--
       #{@@game_grids[7]} | #{@@game_grids[8]} | #{@@game_grids[9]}
       "
-      @@game_grids[gets.to_i] = symbol
+      @@game_grids[place_symbol] = symbol
       @@rounds += 1
       case true
       when is_winner?(@@game_grids)
@@ -106,7 +118,8 @@ puts "Hello there! Welcome to Tic Tac Toe!",
 puts  "Player 2"
      p2 = Player.new
     quit_game = false
-    # Game Loop 
+    # Game Loop
+    #We need to check after each round to see if someone has won or if its a draw.
     loop do
       p1.round
      break if Game.end_game? == true
