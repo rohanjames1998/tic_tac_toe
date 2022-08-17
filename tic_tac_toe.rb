@@ -139,6 +139,17 @@ class Game
   def self.end_game?
     @@end_game
   end
+
+  def self.play_game(player_1, player_2)
+    loop do
+      player_1.round
+      break if Game.end_game? == true
+
+      player_2.round
+      break if Game.end_game? == true
+    end
+
+  end
 end
 
 class Player < Game
@@ -173,10 +184,4 @@ loop do
 end
 # Game Loop
 # We need to check after each round to see if someone has won or if its a draw.
-loop do
-  p1.round
-  break if Game.end_game? == true
-
-  p2.round
-  break if Game.end_game? == true
-end
+Game.play_game(p1, p2)
