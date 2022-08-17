@@ -112,22 +112,22 @@ class Game
 
   def self.start_game
     puts "Hello there! Welcome to Tic Tac Toe!",
-     "Player 1"
-p1 = Player.new
-puts "\nPlayer 2"
-p2 = Player.new
-# This loop checks for symbol duplications
-loop do
-  if p2.symbol == p1.symbol
-    puts "You cannot have the same symbol as your partner!!"
-    puts "Please choose a different symbol"
-    p2.symbol = get_symbol
-    next
-  else
-    break
-  end
-end
-Game.play_game(p1, p2)
+         "Player 1"
+    p1 = Player.new
+    puts "\nPlayer 2"
+    p2 = Player.new
+    # This loop checks for symbol duplications
+    loop do
+      if p2.symbol == p1.symbol
+        puts "You cannot have the same symbol as your partner!!"
+        puts "Please choose a different symbol"
+        p2.symbol = get_symbol
+        next
+      else
+        break
+      end
+    end
+    Game.play_game(p1, p2)
   end
 
   def round
@@ -162,7 +162,7 @@ Game.play_game(p1, p2)
 
   def self.play_game(player_1, player_2)
     # Game Loop
-# We need to check after each round to see if someone has won or if its a draw.
+    # We need to check after each round to see if someone has won or if its a draw.
     loop do
       player_1.round
       break if Game.end_game? == true
@@ -174,28 +174,28 @@ Game.play_game(p1, p2)
     puts "Wanna play another game? [Y/N]:"
     restart_game = gets.chomp.upcase
     loop do
-    case restart_game
-    when "Y"
-      # Resetting game grids and starting a new game
-      @@game_grids = { 1 => 1,
-        2 => 2,
-        3 => 3,
-        4 => 4,
-        5 => 5,
-        6 => 6,
-        7 => 7,
-        8 => 8,
-        9 => 9, }
+      case restart_game
+      when "Y"
+        # Resetting game grids and starting a new game
+        @@game_grids = { 1 => 1,
+                         2 => 2,
+                         3 => 3,
+                         4 => 4,
+                         5 => 5,
+                         6 => 6,
+                         7 => 7,
+                         8 => 8,
+                         9 => 9, }
         @@end_game = false
         @@rounds = 0
-      Game.start_game
-    when "N"
-      return
-    else
-      puts "Please enter a valid input [Y/N]:"
-      restart_game = gets.chomp.upcase
-      next
-    end
+        Game.start_game
+      when "N"
+        return
+      else
+        puts "Please enter a valid input [Y/N]:"
+        restart_game = gets.chomp.upcase
+        next
+      end
     end
   end
 end
