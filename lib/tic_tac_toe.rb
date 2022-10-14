@@ -1,22 +1,21 @@
 require_relative './player'
 
 class TicTacToe
-
   attr_accessor :rounds, :game_grids, :end_game, :p1, :p2
 
   def initialize
-  @rounds = 0
-  # Default values for game_grids
-  @game_grids = { 1 => 1,
-                   2 => 2,
-                   3 => 3,
-                   4 => 4,
-                   5 => 5,
-                   6 => 6,
-                   7 => 7,
-                   8 => 8,
-                   9 => 9, }
-  @end_game = false
+    @rounds = 0
+    # Default values for game_grids
+    @game_grids = { 1 => 1,
+                    2 => 2,
+                    3 => 3,
+                    4 => 4,
+                    5 => 5,
+                    6 => 6,
+                    7 => 7,
+                    8 => 8,
+                    9 => 9, }
+    @end_game = false
   end
 
   def start_game
@@ -38,44 +37,45 @@ class TicTacToe
     play_game(p1, p2)
   end
 
-  def round
+  def round(player)
+    display_grid(player)
+    # Checks for winning and drawing conditions
+  end
+
+  def display_grid(player)
     # Grid for each round
-    puts "\n\n#{name}, please enter a number to place your symbol(#{symbol})",
+    puts "\n\n#{player.name}, please enter a number to place your symbol(#{player.symbol})",
          "      #{game_grids[1]} | #{game_grids[2]} | #{game_grids[3]}
-      --+---+--
-      #{game_grids[4]} | #{game_grids[5]} | #{game_grids[6]}
-      --+---+--
-      #{game_grids[7]} | #{game_grids[8]} | #{game_grids[9]}
-      "
+  --+---+--
+  #{game_grids[4]} | #{game_grids[5]} | #{game_grids[6]}
+  --+---+--
+  #{game_grids[7]} | #{game_grids[8]} | #{game_grids[9]}
+  "
     # Function that asks user to choose a grid to place symbol and checks if it is a valid
-    # location and it doesnt already contain a symbol
+    # location and it doesn't already contain a symbol
     place_symbol_on_grid(game_grids)
     rounds += 1
-    # Checks for winning and drawing conditions
-    case true
-    when is_winner?(game_grids)
-      puts "\nCongratulations #{name}! You have Won the GAME!!!"
-      end_game = true
-      return
-    when rounds == 9
-      puts "\nIt's a draw :("
-      end_game = true
-      return
-    end
   end
 
   def end_game?
-    end_game
+    case
+    when is_winner?(game_grids)
+      puts "\nCongratulations #{player.name}! You have Won the GAME!!!"
+      return true
+    when rounds == 9
+      puts "\nIt's a draw :("
+      return true
+    end
   end
 
   def play_game(player_1, player_2)
     # Game Loop
     # We need to check after each round to see if someone has won or if its a draw.
     loop do
-      player_1.round
+      round(player_1)
       break if end_game? == true
 
-      player_2.round
+      round(player_2)
       break if end_game? == true
     end
     restart_game
@@ -90,14 +90,14 @@ class TicTacToe
       when "Y"
         # Resetting game grids and starting a new game
         game_grids = { 1 => 1,
-                         2 => 2,
-                         3 => 3,
-                         4 => 4,
-                         5 => 5,
-                         6 => 6,
-                         7 => 7,
-                         8 => 8,
-                         9 => 9, }
+                       2 => 2,
+                       3 => 3,
+                       4 => 4,
+                       5 => 5,
+                       6 => 6,
+                       7 => 7,
+                       8 => 8,
+                       9 => 9, }
         end_game = false
         rounds = 0
         play_game(p1, p2)
@@ -162,4 +162,3 @@ class TicTacToe
     end
   end
 end
-
