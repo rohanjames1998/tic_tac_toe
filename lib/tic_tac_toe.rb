@@ -1,11 +1,10 @@
 require_relative './player'
 
-# ------------------------#
-# CLASSES
-# ------------------------#
 class TicTacToe
-  attr_reader :end_game
 
+  attr_accessor: :rounds, :game_grids, :end_game
+
+  def initialize
   @rounds = 0
   # Default values for game_grids
   @game_grids = { 1 => 1,
@@ -18,6 +17,7 @@ class TicTacToe
                    8 => 8,
                    9 => 9, }
   @end_game = false
+  end
 
   def self.start_game
     puts "Hello there! Welcome to Tic Tac Toe!",
