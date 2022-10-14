@@ -1,99 +1,5 @@
 require_relative './player'
 
-
-# ------------------------#
-# MODULES
-# ------------------------#
-module GameFunctions
-  def is_winner?(grid)
-    # This function checks if 3 user symbol gets aligned together
-    case true
-      # For horizontal alignment
-    when grid[1] == grid[2] && grid[2] == grid[3] # 1, 2, and 3
-      return true
-    when grid[4] == grid[5] && grid[5] == grid[6] # 4, 5, and 6
-      return true
-    when grid[7] == grid[8] && grid[8] == grid[9] # 7, 8, and 9
-      return true
-    # For vertical alignment
-    when grid[1] == grid[4] && grid[4] == grid[7] # 1,4, and 7
-      return true
-    when grid[2] == grid[5] && grid[5] == grid[8] # 2,5, and 8
-      return true
-    when grid[3] == grid[6] && grid[6] == grid[9] # 3,6, and 9
-      return true
-      # For cross alignment
-    when grid[1] == grid[5] && grid[5] == grid[9] # 1,5, and 9
-      return true
-    when grid[3] == grid[5] && grid[5] == grid[7] # 3,5, and 7
-      return true
-    else
-      return false
-    end
-  end
-
-  def symbol_place
-    loop do
-      place = gets
-      if /[0-9]/.match(place)
-        return place.to_i
-      else
-        puts "#{name}, please enter a number between 1 and 9 to place your symbol"
-        next
-      end
-    end
-  end
-
-  def place_symbol_on_grid(grid)
-    loop do
-      place = symbol_place
-      if grid[place].is_a?(Integer)
-        return grid[place] = symbol
-      else
-        puts "Sorry that place already contains a symbol. Please select a new place."
-        next
-      end
-    end
-  end
-
-  def get_symbol
-    loop do
-      player_symbol = gets.chomp
-      case
-      when player_symbol.length > 1
-        puts "You can only have one character as your symbol."
-        next
-      when /[0-9]/.match(player_symbol)
-        puts "Your symbol can't be an Integer"
-        next
-      when player_symbol.length == 0 || /\s+/.match(player_symbol)
-        puts "Your symbol cannot be empty"
-        next
-      else
-        return player_symbol
-      end
-    end
-  end
-
-  def get_name
-    loop do
-      player_name = gets.chomp.capitalize
-      if player_name.length > 10
-        puts "Please keep your name under 10 characters"
-        next
-      elsif player_name.length == 0 || /\s+/.match(player_name)
-        puts "Your name cannot be blank",
-             "Please enter a valid name"
-        next
-      else
-        return player_name
-      end
-    end
-  end
-end
-# Making GameFunctions module globally available for this game.
-include GameFunctions
-
 # ------------------------#
 # CLASSES
 # ------------------------#
@@ -198,6 +104,92 @@ class TicTacToe
         puts "Please enter a valid input [Y/N]:"
         restart_game = gets.chomp.upcase
         next
+      end
+    end
+  end
+
+  def is_winner?(grid)
+    # This function checks if 3 user symbol gets aligned together
+    case true
+      # For horizontal alignment
+    when grid[1] == grid[2] && grid[2] == grid[3] # 1, 2, and 3
+      return true
+    when grid[4] == grid[5] && grid[5] == grid[6] # 4, 5, and 6
+      return true
+    when grid[7] == grid[8] && grid[8] == grid[9] # 7, 8, and 9
+      return true
+    # For vertical alignment
+    when grid[1] == grid[4] && grid[4] == grid[7] # 1,4, and 7
+      return true
+    when grid[2] == grid[5] && grid[5] == grid[8] # 2,5, and 8
+      return true
+    when grid[3] == grid[6] && grid[6] == grid[9] # 3,6, and 9
+      return true
+      # For cross alignment
+    when grid[1] == grid[5] && grid[5] == grid[9] # 1,5, and 9
+      return true
+    when grid[3] == grid[5] && grid[5] == grid[7] # 3,5, and 7
+      return true
+    else
+      return false
+    end
+  end
+
+  def symbol_place
+    loop do
+      place = gets
+      if /[0-9]/.match(place)
+        return place.to_i
+      else
+        puts "#{name}, please enter a number between 1 and 9 to place your symbol"
+        next
+      end
+    end
+  end
+
+  def place_symbol_on_grid(grid)
+    loop do
+      place = symbol_place
+      if grid[place].is_a?(Integer)
+        return grid[place] = symbol
+      else
+        puts "Sorry that place already contains a symbol. Please select a new place."
+        next
+      end
+    end
+  end
+
+  def get_symbol
+    loop do
+      player_symbol = gets.chomp
+      case
+      when player_symbol.length > 1
+        puts "You can only have one character as your symbol."
+        next
+      when /[0-9]/.match(player_symbol)
+        puts "Your symbol can't be an Integer"
+        next
+      when player_symbol.length == 0 || /\s+/.match(player_symbol)
+        puts "Your symbol cannot be empty"
+        next
+      else
+        return player_symbol
+      end
+    end
+  end
+
+  def get_name
+    loop do
+      player_name = gets.chomp.capitalize
+      if player_name.length > 10
+        puts "Please keep your name under 10 characters"
+        next
+      elsif player_name.length == 0 || /\s+/.match(player_name)
+        puts "Your name cannot be blank",
+             "Please enter a valid name"
+        next
+      else
+        return player_name
       end
     end
   end
