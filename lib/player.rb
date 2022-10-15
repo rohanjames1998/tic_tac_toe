@@ -1,14 +1,31 @@
 class Player
   attr_accessor :name, :symbol
 
-  def initialize()
-    puts "Please enter a name"
-    @name = get_name
-    puts "#{name}, please chose your symbol"
-    @symbol = get_symbol
+  def initialize(name='', symbol='')
+    @name = name
+    @symbol = symbol
   end
 
+    def get_name
+      puts "Please enter your name."
+      loop do
+        player_name = gets.chomp.capitalize
+        if player_name.length > 10
+          puts "Please keep your name under 10 characters."
+          next
+        elsif player_name.length == 0 || /\s+/.match(player_name)
+          puts "Your name cannot be blank.",
+               "Please enter a valid name."
+          next
+        else
+          @name = player_name
+          return
+        end
+      end
+    end
+
   def get_symbol
+    puts "#{self.name} please choose a symbol."
     loop do
       player_symbol = gets.chomp
       case
@@ -22,23 +39,8 @@ class Player
         puts "Your symbol cannot be empty"
         next
       else
-        return player_symbol
-      end
-    end
-  end
-
-  def get_name
-    loop do
-      player_name = gets.chomp.capitalize
-      if player_name.length > 10
-        puts "Please keep your name under 10 characters"
-        next
-      elsif player_name.length == 0 || /\s+/.match(player_name)
-        puts "Your name cannot be blank",
-             "Please enter a valid name"
-        next
-      else
-        return player_name
+        @symbol = player_symbol
+        return
       end
     end
   end
