@@ -1,10 +1,15 @@
 require_relative '../lib/player'
 
 describe Player do
+  # To remove all output statements that might clutter
+  # test results.
+  before do
+    allow(STDOUT).to receive(:puts)
+  end
 
   describe '#get_name' do
 
-    context 'if player_name.length > 10' do
+    context 'If player_name.length > 10' do
       subject(:long_name) { described_class.new }
 
       it 'It restarts the loop until valid input is given' do
@@ -17,7 +22,7 @@ describe Player do
       end
     end
 
-    context 'if player_name.length == 0 or player name is an empty space' do
+    context 'If player_name.length == 0 or player name is an empty space' do
       subject(:no_name) { described_class.new }
 
       it 'Restarts the loop if the name is empty or space' do
@@ -30,7 +35,7 @@ describe Player do
       end
     end
 
-    context 'if valid name is given' do
+    context 'If name given is valid' do
       subject(:perfect_name) { described_class.new }
 
       it 'Sets @name to valid name' do
@@ -42,7 +47,55 @@ describe Player do
     end
   end
 
+  describe '#get_symbol' do
 
+    context 'If symbol length is > 1' do
+      subject(:long_symbol) { described_class.new }
 
+        it 'Restarts the loop until valid symbol is given' do
+        invalid_symbol = 'xD'
+        valid_symbol = 'x'
+        # allow(long_symbol).to receive(:name).with('jon')
+        allow(long_symbol).to receive(:gets).and_return(invalid_symbol, invalid_symbol, valid_symbol)
+        expect(long_symbol).to receive(:gets).exactly(3).times
+        long_symbol.get_symbol
+      end
+    end
 
+    context 'If symbol is an integer' do
+      subject(:int_symbol) { described_class.new }
+
+      it 'Restarts the loop until a non integer is given' do
+      invalid_symbol = '4'
+      valid_symbol = 'y'
+      allow(int_symbol).to receive(:gets).and_return(invalid_symbol, invalid_symbol, valid_symbol)
+      expect(int_symbol).to receive(:gets).exactly(3).times
+      int_symbol.get_symbol
+    end
+  end
+
+  context 'If no symbol is given (i.e., empty space or no symbol at all)' do
+    subject(:no_symbol) { described_class.new }
+
+    it 'Restarts the loop until a symbol is given' do
+    empty_symbol = ''
+    space_symbol = ' '
+    valid_symbol = '@'
+    allow(no_symbol).to receive(:gets).and_return(empty_symbol, space_symbol, valid_symbol)
+    expect(no_symbol).to receive(:gets).exactly(3).times
+    no_symbol.get_symbol
+    end
+  end
+
+  context 'If valid symbol is given' do
+    subject(:perfect_symbol) { described_class.new }
+
+    it 'Changes player symbol to given symbol' do
+      valid_symbol = '~'
+      allow(perfect_symbol).to receive(:gets).and_return(valid_symbol)
+      perfect_symbol.get_symbol
+      expect(perfect_symbol.symbol).to eq(valid_symbol)
+    end
+  end
+  end
 end
