@@ -1,5 +1,6 @@
 require_relative '../lib/tic_tac_toe'
 require_relative '../lib/player'
+require 'rspec/expectations'
 
 describe TicTacToe do
   before do
@@ -29,7 +30,7 @@ describe TicTacToe do
         game_start.start_game(p1, p2)
       end
 
-      it 'Sends for player class to set symbol for both players' do
+      it 'sends for player class to set symbol for both players' do
         expect(p1).to receive(:get_symbol).once
         expect(p2).to receive(:get_symbol).once
         game_start.start_game(p1, p2)
@@ -41,7 +42,7 @@ describe TicTacToe do
     subject(:duplicate_sym_game) { described_class.new }
 
     context 'When both players have same symbol' do
-      it 'Loops until both have different symbols' do
+      it 'loops until both have different symbols' do
         symbol_1 = 'x'
         symbol_2 = 'y'
         allow(p1).to receive(:symbol).and_return(symbol_1, symbol_1,symbol_1, symbol_2)
@@ -53,14 +54,37 @@ describe TicTacToe do
   end
 
   describe '#play_game' do
+    before do
+    allow(in_game).to receive(:restart_game)
+    end
     subject(:in_game) { described_class.new }
 
     context 'When called' do
       it 'calls #round and ends the game if eng_game? is true' do
         allow(in_game).to receive(:end_game?).and_return(false, false, false, true)
-        allow(in_game).to receive(:restart_game)
         expect(in_game).to receive(:round).exactly(4).times
         in_game.play_game(p1, p2)
+      end
+    end
+  end
+
+  describe '#round' do
+    RSpec::Matchers.define :be_increased_by_one do |prev_count|
+      match do |new_count|
+        new_count - 1 == prev_count
+      end
+    end
+    subject(:game) { described_class.new }
+
+    context 'When called' do
+      before do
+        allow(game).to receive(:display_grid)
+        allow(game).to receive(:place_symbol_on_grid)
+      end
+      it 'increases rounds count by 1' do
+        previous_rounds = game.rounds
+        game.round(p1)
+        expect(game.rounds).to be_increased_by_one(previous_rounds)
       end
     end
   end
