@@ -17,23 +17,31 @@ class TicTacToe
                     9 => 9, }
   end
 
-  def start_game
+  def start_game(p1=Player.new, p2=Player.new)
     puts "Hello there! Welcome to Tic Tac Toe!",
          "Player 1"
-    @p1 = Player.new
+    @p1 = p1
+    @p2 = p2
+    p1.get_name
+    p1.get_symbol
     puts "\nPlayer 2"
-    @p2 = Player.new
+    p2.get_name
+    p2.get_symbol
+    duplicate_symbol_check(p1, p2)
+    play_game(p1, p2)
+  end
+
+  def duplicate_symbol_check(p1, p2)
     # This loop checks for symbol duplications
     loop do
       if p2.symbol == p1.symbol
         puts "You cannot have the same symbol as your partner!!"
         puts "Please choose a different symbol"
-        p2.symbol = p2.get_symbol
+        p2.get_symbol
         next
       end
-      break
+      return
     end
-    play_game(p1, p2)
   end
 
   def play_game(player_1, player_2)
