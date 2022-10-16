@@ -53,9 +53,17 @@ describe TicTacToe do
   end
 
   describe '#play_game' do
-    subject(:playing_game) { described_class.new }
-  end
+    subject(:in_game) { described_class.new }
 
+    context 'When called' do
+      it 'calls #round and ends the game if eng_game? is true' do
+        allow(in_game).to receive(:end_game?).and_return(false, false, false, true)
+        allow(in_game).to receive(:restart_game)
+        expect(in_game).to receive(:round).exactly(4).times
+        in_game.play_game(p1, p2)
+      end
+    end
+  end
 end
 
 
