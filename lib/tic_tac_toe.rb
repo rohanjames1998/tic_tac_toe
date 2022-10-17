@@ -60,21 +60,26 @@ class TicTacToe
   def round(player)
     display_grid(player)
     place_symbol_on_grid(game_grids, player)
+    self.rounds += 1
   end
 
     # Function that asks user to choose a grid to place symbol and checks if it is a valid
     # location and it doesn't already contain a symbol
-    def place_symbol_on_grid(grid, player)
+    def place_symbol_on_grid(grid=game_grids, player)
       loop do
         place = symbol_place(player)
         # This is to make sure player doesn't put symbol where one is already present.
-        if grid[place].is_a?(Integer)
-          return grid[place] = symbol
+        if does_not_have_symbol?(place)
+          return grid[place] = player.symbol
         else
           puts "Sorry that place already contains a symbol. Please select a new place."
           next
         end
       end
+    end
+
+    def does_not_have_symbol?(place)
+      game_grids[place].is_a?(Integer)
     end
 
     # This function gets and verifies that player input is an integer.
